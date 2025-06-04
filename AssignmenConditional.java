@@ -17,14 +17,41 @@ public class AssignmenConditional{
 
 
         // que 2
+        double temp = 100.3;
+
+        if (temp > 100) {
+            System.out.println("You have a fever");
+        } else {
+            System.out.println("You are healthy");
+        }
+        
+            
+        }
 
         
+
+
+       
+       
+            
+
+        
+
+        // que 
+
+
+
+
+
+
+
+
         
 
 
-
+}
         
-    }
+    
 
     
 
@@ -33,4 +60,3 @@ public class AssignmenConditional{
 
 
 
-    }
