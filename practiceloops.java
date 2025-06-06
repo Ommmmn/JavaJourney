@@ -34,18 +34,74 @@ public class practiceloops {
 
         //  sum of first n natural numbers
 
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+        // Scanner sc = new Scanner(System.in);
+        // int n = sc.nextInt();
 
-        int sum= 0;
-        int i = 1;
+        // int sum= 0;
+        // int i = 1;
 
-        while(i <= n) {
+        // while(i <= n) {
             
-            sum += i; 
-            i++;
-        }
-        System.out.println("Sum of number " + sum );
+        //     sum += i; 
+        //     i++;
+        // }
+        // System.out.println("Sum of number " + sum );
+
+
+        // for loop
+
+        // 
+        
+        // print square pattern
+
+
+
+        // for (int line = 1;line <= 4; line++) {
+        //     System.err.println("****");
+        // } 
+
+        //  print reverse number from n to 1
+        
+        // Scanner sc = new Scanner(System.in);
+
+        // int n = sc.nextInt();
+        // for (int i = n; i >= 1; i--) {
+        //     System.out.println(i);
+        // }
+
+        //  print reverse number
+        // int n = 10899;
+
+        // while(n >0) {
+        //     int lastdigit = n % 10;
+        //     System.out.println(lastdigit + " ");
+        //     n = n / 10;
+
+        // }
+        // System.out.println("Reverse number printed successfully");
+
+        
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
 
 
 
