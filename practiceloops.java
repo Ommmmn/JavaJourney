@@ -80,7 +80,80 @@ public class practiceloops {
         // }
         // System.out.println("Reverse number printed successfully");
 
+
+        //  dp while loop
+
+        // int counter = 1;
+        // do{
+        //     System.out.println("Hello World");
+        //     counter++;
+        // }while (counter <= 10);
+
+        // break statement 
+
+        // for (int i = 1; i <= 10; i++) {
+        //     if (i == 5) {
+        //         break;
+
+        //     }
+        //     System.out.println(i);
         
+        // }
+
+        // beak example with while loop
+
+        // Scanner sc = new Scanner(System.in);
+
+        // do{
+        //     int n = sc.nextInt();
+        //     if (n% 10 ==0){
+        //         break;
+        //     }
+        //     System.out.println(n);
+        // }while (true);
+        // System.out.println("Exited the loop because last digit was 0");
+
+        // continue statement
+
+        // for (int i=1; i<=5; i++) {
+        //     if (i == 3) {
+        //         continue; // skips the rest of the loop when i is 3
+        //     }
+        //     System.out.println(i); // prints 1, 2, 4, 5
+        // } 
+
+        // continue  ( dont print multiples of 10) example with while loop
+        // Scanner sc = new Scanner(System.in);
+        
+        // do{
+        //     int n = sc.nextInt();
+        //     if (n % 10 == 0) {
+        //         continue; // skips the rest of the loop when n is a multiple of 10
+        //     }
+        //     System.out.println("number was :" + n);
+        // }while (true);
+
+        // check wheter prime or not
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter a number to check if it is prime or not:");
+
+        int n = sc.nextInt();
+        boolean isPrime = true;
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) {
+                isPrime = false; // n is divisible by i, so it's not prime
+                break; // no need to check further
+            }
+        }
+
+
+
+
+
+
+
+
 
 
 
