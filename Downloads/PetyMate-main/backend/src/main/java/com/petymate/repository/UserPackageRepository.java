@@ -1,0 +1,11 @@
+package com.petymate.repository;
+
+import com.petymate.entity.UserPackage;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+
+@Repository
+public interface UserPackageRepository extends JpaRepository<UserPackage, Long> {
+    List<UserPackage> findByUserIdOrderByPurchasedAtDesc(Long userId);
+}

@@ -1,0 +1,709 @@
+{
+  "info": {
+    "name": "PetyMate API",
+    "_postman_id": "petymate-collection-2024",
+    "description": "Complete API collection for PetyMate — India's One-Stop Pet Platform.\n\nBase URL: {{baseUrl}}\nAuth: Bearer {{token}}",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "refreshToken", "value": "", "type": "string" },
+    { "key": "petId", "value": "", "type": "string" },
+    { "key": "matchId", "value": "", "type": "string" },
+    { "key": "orderId", "value": "", "type": "string" },
+    { "key": "vetId", "value": "", "type": "string" },
+    { "key": "trainerId", "value": "", "type": "string" },
+    { "key": "packageId", "value": "", "type": "string" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rahul Sharma\",\n  \"email\": \"rahul@petymate.in\",\n  \"password\": \"Rahul@123\",\n  \"phone\": \"9876543210\",\n  \"city\": \"Mumbai\",\n  \"state\": \"Maharashtra\",\n  \"pincode\": \"400001\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Register success', () => pm.response.to.have.status(200));",
+                "var json = pm.response.json();",
+                "if (json.data) {",
+                "  pm.collectionVariables.set('token', json.data.accessToken);",
+                "  pm.collectionVariables.set('refreshToken', json.data.refreshToken);",
+                "}"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rahul@petymate.in\",\n  \"password\": \"Rahul@123\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Login success', () => pm.response.to.have.status(200));",
+                "var json = pm.response.json();",
+                "if (json.data) {",
+                "  pm.collectionVariables.set('token', json.data.accessToken);",
+                "  pm.collectionVariables.set('refreshToken', json.data.refreshToken);",
+                "}"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/refresh", "host": ["{{baseUrl}}"], "path": ["api", "auth", "refresh"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Refresh success', () => pm.response.to.have.status(200));",
+                "var json = pm.response.json();",
+                "if (json.data) pm.collectionVariables.set('token', json.data.accessToken);"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path": ["api", "auth", "logout"] }
+          }
+        },
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/auth/me", "host": ["{{baseUrl}}"], "path": ["api", "auth", "me"] }
+          }
+        },
+        {
+          "name": "Update Me",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/me", "host": ["{{baseUrl}}"], "path": ["api", "auth", "me"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rahul K. Sharma\",\n  \"phone\": \"9876543210\",\n  \"city\": \"Pune\",\n  \"state\": \"Maharashtra\",\n  \"pincode\": \"411001\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pets",
+      "item": [
+        {
+          "name": "Create Pet",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/pets", "host": ["{{baseUrl}}"], "path": ["api", "pets"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Bruno", "type": "text" },
+                { "key": "species", "value": "DOG", "type": "text" },
+                { "key": "breed", "value": "Labrador Retriever", "type": "text" },
+                { "key": "ageMonths", "value": "24", "type": "text" },
+                { "key": "gender", "value": "MALE", "type": "text" },
+                { "key": "color", "value": "Golden", "type": "text" },
+                { "key": "weightKg", "value": "28.5", "type": "text" },
+                { "key": "vaccinationStatus", "value": "true", "type": "text" },
+                { "key": "neutered", "value": "false", "type": "text" },
+                { "key": "pedigreeCertified", "value": "true", "type": "text" },
+                { "key": "hasOwnSpace", "value": "true", "type": "text" },
+                { "key": "bio", "value": "Friendly Labrador looking for a loving mate. Fully vaccinated, great temperament.", "type": "text" },
+                { "key": "city", "value": "Mumbai", "type": "text" },
+                { "key": "state", "value": "Maharashtra", "type": "text" },
+                { "key": "pincode", "value": "400001", "type": "text" },
+                { "key": "listingType", "value": "MATING", "type": "text" },
+                { "key": "photos", "type": "file", "src": "" }
+              ]
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Create pet success', () => pm.response.to.have.status(200));",
+                "var json = pm.response.json();",
+                "if (json.data) pm.collectionVariables.set('petId', json.data.id);"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Get Pets (with filters)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/pets?species=DOG&city=Mumbai&listingType=MATING&page=0&size=12",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pets"],
+              "query": [
+                { "key": "species", "value": "DOG" },
+                { "key": "city", "value": "Mumbai" },
+                { "key": "listingType", "value": "MATING" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "12" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Pet by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/pets/{{petId}}", "host": ["{{baseUrl}}"], "path": ["api", "pets", "{{petId}}"] }
+          }
+        },
+        {
+          "name": "Update Pet",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/pets/{{petId}}", "host": ["{{baseUrl}}"], "path": ["api", "pets", "{{petId}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bruno Jr\",\n  \"bio\": \"Updated bio for Bruno\",\n  \"weightKg\": 30.0\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Pet",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/pets/{{petId}}", "host": ["{{baseUrl}}"], "path": ["api", "pets", "{{petId}}"] }
+          }
+        },
+        {
+          "name": "My Pets",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/pets/my", "host": ["{{baseUrl}}"], "path": ["api", "pets", "my"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Matches",
+      "item": [
+        {
+          "name": "Send Match Request",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/matches/request", "host": ["{{baseUrl}}"], "path": ["api", "matches", "request"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requesterPetId\": 1,\n  \"receiverPetId\": 2,\n  \"message\": \"Hi! My Bruno would be a great match for your pet. He is fully vaccinated and pedigree certified.\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test('Match request sent', () => pm.response.to.have.status(200));",
+                "var json = pm.response.json();",
+                "if (json.data) pm.collectionVariables.set('matchId', json.data.id);"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Get Received Requests",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/matches/received?page=0&size=10", "host": ["{{baseUrl}}"], "path": ["api", "matches", "received"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "10" }] }
+          }
+        },
+        {
+          "name": "Get Sent Requests",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/matches/sent?page=0&size=10", "host": ["{{baseUrl}}"], "path": ["api", "matches", "sent"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "10" }] }
+          }
+        },
+        {
+          "name": "Accept Match",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{baseUrl}}/api/matches/{{matchId}}/accept", "host": ["{{baseUrl}}"], "path": ["api", "matches", "{{matchId}}", "accept"] }
+          }
+        },
+        {
+          "name": "Reject Match",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{baseUrl}}/api/matches/{{matchId}}/reject", "host": ["{{baseUrl}}"], "path": ["api", "matches", "{{matchId}}", "reject"] }
+          }
+        },
+        {
+          "name": "Create Unlock Order",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/matches/{{matchId}}/create-unlock-order", "host": ["{{baseUrl}}"], "path": ["api", "matches", "{{matchId}}", "create-unlock-order"] }
+          }
+        },
+        {
+          "name": "Unlock Contact",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/matches/{{matchId}}/unlock", "host": ["{{baseUrl}}"], "path": ["api", "matches", "{{matchId}}", "unlock"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"razorpayOrderId\": \"order_test123\",\n  \"razorpayPaymentId\": \"pay_test123\",\n  \"razorpaySignature\": \"sig_test123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "Get Plans",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/subscriptions/plans", "host": ["{{baseUrl}}"], "path": ["api", "subscriptions", "plans"] },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Create Order (BASIC)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/subscriptions/create-order", "host": ["{{baseUrl}}"], "path": ["api", "subscriptions", "create-order"] },
+            "body": { "mode": "raw", "raw": "{\n  \"plan\": \"BASIC\"\n}" }
+          }
+        },
+        {
+          "name": "Create Order (PREMIUM)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/subscriptions/create-order", "host": ["{{baseUrl}}"], "path": ["api", "subscriptions", "create-order"] },
+            "body": { "mode": "raw", "raw": "{\n  \"plan\": \"PREMIUM\"\n}" }
+          }
+        },
+        {
+          "name": "Verify Payment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/subscriptions/verify", "host": ["{{baseUrl}}"], "path": ["api", "subscriptions", "verify"] },
+            "body": { "mode": "raw", "raw": "{\n  \"razorpayOrderId\": \"order_test123\",\n  \"razorpayPaymentId\": \"pay_test123\",\n  \"razorpaySignature\": \"sig_test123\",\n  \"plan\": \"BASIC\"\n}" }
+          }
+        },
+        {
+          "name": "My Subscription",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/subscriptions/my", "host": ["{{baseUrl}}"], "path": ["api", "subscriptions", "my"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shop",
+      "item": [
+        {
+          "name": "Get Shop Pets",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/shop/pets?species=DOG&listingType=SALE&page=0&size=12",
+              "host": ["{{baseUrl}}"], "path": ["api", "shop", "pets"],
+              "query": [{ "key": "species", "value": "DOG" }, { "key": "listingType", "value": "SALE" }, { "key": "page", "value": "0" }, { "key": "size", "value": "12" }]
+            },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Get Shop Pet Detail",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/shop/pets/{{petId}}", "host": ["{{baseUrl}}"], "path": ["api", "shop", "pets", "{{petId}}"] },
+            "auth": { "type": "noauth" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/products?category=FOOD&page=0&size=12",
+              "host": ["{{baseUrl}}"], "path": ["api", "products"],
+              "query": [{ "key": "category", "value": "FOOD" }, { "key": "page", "value": "0" }, { "key": "size", "value": "12" }]
+            },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Get Product",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/products/1", "host": ["{{baseUrl}}"], "path": ["api", "products", "1"] },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Add Review",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/products/1/review", "host": ["{{baseUrl}}"], "path": ["api", "products", "1", "review"] },
+            "body": { "mode": "raw", "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Excellent quality dog food! My Labrador loves it.\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Cart Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/orders/cart/create-order", "host": ["{{baseUrl}}"], "path": ["api", "orders", "cart", "create-order"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    { \"productId\": 1, \"qty\": 2 },\n    { \"productId\": 3, \"qty\": 1 }\n  ],\n  \"shippingName\": \"Rahul Sharma\",\n  \"shippingPhone\": \"9876543210\",\n  \"shippingAddress\": \"Flat 12A, Sagar Heights, Andheri West\",\n  \"shippingCity\": \"Mumbai\",\n  \"shippingState\": \"Maharashtra\",\n  \"shippingPincode\": \"400053\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "var json = pm.response.json();",
+                "if (json.data) pm.collectionVariables.set('orderId', json.data.razorpayOrderId);"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Verify Cart Payment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/orders/cart/verify", "host": ["{{baseUrl}}"], "path": ["api", "orders", "cart", "verify"] },
+            "body": { "mode": "raw", "raw": "{\n  \"razorpayOrderId\": \"order_test123\",\n  \"razorpayPaymentId\": \"pay_test123\",\n  \"razorpaySignature\": \"sig_test123\"\n}" }
+          }
+        },
+        {
+          "name": "My Orders",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/orders/my?page=0&size=10", "host": ["{{baseUrl}}"], "path": ["api", "orders", "my"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "10" }] }
+          }
+        },
+        {
+          "name": "Get Order",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/orders/1", "host": ["{{baseUrl}}"], "path": ["api", "orders", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vets",
+      "item": [
+        {
+          "name": "Get Vets",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/vets?city=Mumbai&verifiedOnly=true&page=0&size=12",
+              "host": ["{{baseUrl}}"], "path": ["api", "vets"],
+              "query": [{ "key": "city", "value": "Mumbai" }, { "key": "verifiedOnly", "value": "true" }, { "key": "page", "value": "0" }, { "key": "size", "value": "12" }]
+            },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Get Vet",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/vets/1", "host": ["{{baseUrl}}"], "path": ["api", "vets", "1"] },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Add Vet Review",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/vets/1/review", "host": ["{{baseUrl}}"], "path": ["api", "vets", "1", "review"] },
+            "body": { "mode": "raw", "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Dr. Sharma is an excellent vet. Very caring with pets.\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Appointments",
+      "item": [
+        {
+          "name": "Create Appointment Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/appointments/create-order", "host": ["{{baseUrl}}"], "path": ["api", "appointments", "create-order"] },
+            "body": { "mode": "raw", "raw": "{\n  \"vetId\": 1,\n  \"petId\": 1,\n  \"date\": \"2026-04-15\",\n  \"time\": \"10:00:00\",\n  \"mode\": \"ONLINE\",\n  \"notes\": \"Regular checkup and vaccination\"\n}" }
+          }
+        },
+        {
+          "name": "Verify Appointment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/appointments/verify", "host": ["{{baseUrl}}"], "path": ["api", "appointments", "verify"] },
+            "body": { "mode": "raw", "raw": "{\n  \"razorpayOrderId\": \"order_test123\",\n  \"razorpayPaymentId\": \"pay_test123\",\n  \"razorpaySignature\": \"sig_test123\"\n}" }
+          }
+        },
+        {
+          "name": "My Appointments",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/appointments/my?page=0&size=10", "host": ["{{baseUrl}}"], "path": ["api", "appointments", "my"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "10" }] }
+          }
+        },
+        {
+          "name": "Cancel Appointment",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{baseUrl}}/api/appointments/1/cancel", "host": ["{{baseUrl}}"], "path": ["api", "appointments", "1", "cancel"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trainers",
+      "item": [
+        {
+          "name": "Get Trainers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/trainers?city=Delhi&specialization=OBEDIENCE&page=0&size=12",
+              "host": ["{{baseUrl}}"], "path": ["api", "trainers"],
+              "query": [{ "key": "city", "value": "Delhi" }, { "key": "specialization", "value": "OBEDIENCE" }, { "key": "page", "value": "0" }, { "key": "size", "value": "12" }]
+            },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Get Trainer",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/trainers/1", "host": ["{{baseUrl}}"], "path": ["api", "trainers", "1"] },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Add Trainer Review",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/trainers/1/review", "host": ["{{baseUrl}}"], "path": ["api", "trainers", "1", "review"] },
+            "body": { "mode": "raw", "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Vikram is an exceptional trainer. My dog learned sit, stay, and recall in just 3 sessions.\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Training",
+      "item": [
+        {
+          "name": "Create Session Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/training/sessions/create-order", "host": ["{{baseUrl}}"], "path": ["api", "training", "sessions", "create-order"] },
+            "body": { "mode": "raw", "raw": "{\n  \"trainerId\": 1,\n  \"petId\": 1,\n  \"date\": \"2026-04-20\",\n  \"time\": \"09:00:00\",\n  \"durationHours\": 2,\n  \"mode\": \"HOME_VISIT\",\n  \"focusArea\": \"Obedience\",\n  \"petCurrentIssues\": \"Pulls on leash during walks, does not respond to recall\"\n}" }
+          }
+        },
+        {
+          "name": "Verify Session",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/training/sessions/verify", "host": ["{{baseUrl}}"], "path": ["api", "training", "sessions", "verify"] },
+            "body": { "mode": "raw", "raw": "{\n  \"razorpayOrderId\": \"order_test123\",\n  \"razorpayPaymentId\": \"pay_test123\",\n  \"razorpaySignature\": \"sig_test123\"\n}" }
+          }
+        },
+        {
+          "name": "My Sessions",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/training/sessions/my?page=0&size=10", "host": ["{{baseUrl}}"], "path": ["api", "training", "sessions", "my"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "10" }] }
+          }
+        },
+        {
+          "name": "Buy Package Order",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/training/packages/1/buy-order", "host": ["{{baseUrl}}"], "path": ["api", "training", "packages", "1", "buy-order"] }
+          }
+        },
+        {
+          "name": "Verify Package Purchase",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/training/packages/1/buy-verify", "host": ["{{baseUrl}}"], "path": ["api", "training", "packages", "1", "buy-verify"] },
+            "body": { "mode": "raw", "raw": "{\n  \"razorpayOrderId\": \"order_test123\",\n  \"razorpayPaymentId\": \"pay_test123\",\n  \"razorpaySignature\": \"sig_test123\"\n}" }
+          }
+        },
+        {
+          "name": "My Packages",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/training/packages/my", "host": ["{{baseUrl}}"], "path": ["api", "training", "packages", "my"] }
+          }
+        },
+        {
+          "name": "Cancel Session",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{baseUrl}}/api/training/sessions/1/cancel", "host": ["{{baseUrl}}"], "path": ["api", "training", "sessions", "1", "cancel"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chatbot",
+      "item": [
+        {
+          "name": "Send Message (greeting)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/chatbot/message", "host": ["{{baseUrl}}"], "path": ["api", "chatbot", "message"] },
+            "body": { "mode": "raw", "raw": "{\n  \"sessionToken\": null,\n  \"message\": \"Hello Marshal!\",\n  \"userId\": null\n}" },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Send Message (find trainer)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/chatbot/message", "host": ["{{baseUrl}}"], "path": ["api", "chatbot", "message"] },
+            "body": { "mode": "raw", "raw": "{\n  \"sessionToken\": null,\n  \"message\": \"I need a dog trainer for obedience training\",\n  \"userId\": null\n}" },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Send Message (unknown intent)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/chatbot/message", "host": ["{{baseUrl}}"], "path": ["api", "chatbot", "message"] },
+            "body": { "mode": "raw", "raw": "{\n  \"sessionToken\": null,\n  \"message\": \"What is the meaning of life?\",\n  \"userId\": null\n}" },
+            "auth": { "type": "noauth" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/admin/dashboard", "host": ["{{baseUrl}}"], "path": ["api", "admin", "dashboard"] }
+          }
+        },
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/admin/users?page=0&size=20", "host": ["{{baseUrl}}"], "path": ["api", "admin", "users"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "20" }] }
+          }
+        },
+        {
+          "name": "Ban User",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{baseUrl}}/api/admin/users/2/ban", "host": ["{{baseUrl}}"], "path": ["api", "admin", "users", "2", "ban"] }
+          }
+        },
+        {
+          "name": "List Pets",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/admin/pets?page=0&size=20", "host": ["{{baseUrl}}"], "path": ["api", "admin", "pets"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "20" }] }
+          }
+        },
+        {
+          "name": "Verify Vet",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{baseUrl}}/api/admin/vets/1/verify", "host": ["{{baseUrl}}"], "path": ["api", "admin", "vets", "1", "verify"] }
+          }
+        },
+        {
+          "name": "Verify Trainer",
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{baseUrl}}/api/admin/trainers/1/verify", "host": ["{{baseUrl}}"], "path": ["api", "admin", "trainers", "1", "verify"] }
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/admin/orders/1/status", "host": ["{{baseUrl}}"], "path": ["api", "admin", "orders", "1", "status"] },
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"SHIPPED\",\n  \"trackingNumber\": \"DTDC123456789\"\n}" }
+          }
+        }
+      ]
+    }
+  ]
+}
